@@ -5,22 +5,79 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" text="text/css" href="./style.css">
+  <link rel="stylesheet" type='text/css' href="./style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <div id="wrapper">
+  <div id='wrapper'>
     <h2>Awesome To Do List</h2>
-    <input type="text" id="input" placeholder="what do you need to do today">
-    <button id="btn" class="btns">Add</button>
-    <ul class="all_tasks">
-      <li><input type='checkbox'>shopping <i class="fa fa-trash"></i></li>
-      <li><input type='checkbox'>swimming <i class="fa fa-trash"></i></li>
+    <input type="text" id='input' placeholder="what do you need to do today?">
+    <button id='btn' class='btns'>Add</button>
+    <p id="notification"></p>
+    <ul class='all-tasks'>
+      <!-- <li><input type="checkbox">shopping <i class="fa fa-trash"> </i> </li>
+         <li><input type="checkbox">swimming <i class="fa fa-trash"> </i> </li> -->
     </ul>
-    <button id="bringBack" class="btns">Bring last removed task</button>
+    <button id='bringBack' class='btns'>Bring last removed task</button>
 
   </div>
+
+  <script>
+    var wrapper = document.querySelector('#wrapper');
+    var inputToDo = document.querySelector('#input');
+    var btnAdd = document.querySelector('#btn');
+    var bringBack = document.querySelector('#bringBack');
+    var ulTasks = document.querySelector('.all-tasks');
+    var warning = document.querySelector('#notification');
+
+    listOfTasks=[]
+
+
+    wrapper.addEventListener('click', function (event) {
+      if (event.target.getAttribute('id') === 'btn') {
+        if(!(inputToDo.value.trim())){
+
+          warning.innerHTML='Sorry, input space cannot be empty'
+          return
+        }
+        if(listOfTasks.includes(inputToDo.value)){
+          warning.innerHTML='Sorry, this task is already exists!'
+
+        }
+        else{
+          warning.innerHTML=''
+
+          listOfTasks.push(inputToDo.value)
+          createElements(inputToDo)
+        }
+        
+        
+        inputToDo.value = ''
+      }
+      if (event.target.getAttribute('id') === 'bringBack') {
+        console.log('hello brich back clicked')
+      }
+    })
+
+    function createElements(x) {
+      var li = document.createElement('li')
+      var inputCheck = document.createElement('input')
+      inputCheck.type = 'checkbox'
+
+
+      li.appendChild(inputCheck)
+
+      li.innerHTML = li.innerHTML + x.value
+
+      var icon = document.createElement('i')
+      icon.setAttribute('class', 'fa fa-trash');
+      li.appendChild(icon)
+
+
+      ulTasks.appendChild(li)
+    }
+  </script>
 </body>
 
 </html>
