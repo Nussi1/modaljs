@@ -11,15 +11,15 @@
 
 <body>
   <div id='wrapper'>
-    <h2>Awesome To Do List</h2>
-    <input type="text" id='input' placeholder="what do you need to do today?">
+    <div id="head"><h4>Awesome To Do List</h4></div>
+    <input type="text" id='input' placeholder="add tasks for today">
     <button id='btn' class='btns'>Add</button>
     <p id="notification"></p>
     <ul class='all-tasks'>
       <!-- <li><input type="checkbox">shopping <i class="fa fa-trash"> </i> </li>
          <li><input type="checkbox">swimming <i class="fa fa-trash"> </i> </li> -->
     </ul>
-    <button id='bringBack' class='btns'>Bring last removed task</button>
+    <!-- <button id='bringBack' class='btns'>Bring last removed task</button> -->
 
   </div>
 
@@ -31,32 +31,46 @@
     var ulTasks = document.querySelector('.all-tasks');
     var warning = document.querySelector('#notification');
 
-    listOfTasks=[]
+    let listOfTasks = []
 
 
     wrapper.addEventListener('click', function (event) {
       if (event.target.getAttribute('id') === 'btn') {
-        if(!(inputToDo.value.trim())){
+        if (!(inputToDo.value.trim())) {
+          alert('sorry input space cannot be empty')
 
-          warning.innerHTML='Sorry, input space cannot be empty'
           return
         }
-        if(listOfTasks.includes(inputToDo.value)){
-          warning.innerHTML='Sorry, this task is already exists!'
+        if (listOfTasks.includes(inputToDo.value.toLowerCase())) {
+          alert('This task already exists!')
 
         }
-        else{
-          warning.innerHTML=''
+        else {
+          warning.innerHTML = ''
 
-          listOfTasks.push(inputToDo.value)
+          listOfTasks.push(inputToDo.value.toLowerCase())
           createElements(inputToDo)
         }
-        
-        
+
+
         inputToDo.value = ''
       }
-      if (event.target.getAttribute('id') === 'bringBack') {
-        console.log('hello brich back clicked')
+      if (event.target.getAttribute('type') === 'checkbox') {
+        console.log('checkbox clicked')
+        event.target.parentElement.classList.toggle('toogle')
+      }
+
+      if (event.target.getAttribute('class') === 'fa fa-trash') {
+
+        const x = listOfTasks.indexOf(event.target.parentElement.textContent.toLowerCase())
+        var r = confirm('Do you want to delete?');
+        if(r== true){
+          delete listOfTasks[x]
+          event.target.parentElement.remove()
+        } else {
+          alert('You pressed Cancel!');
+        }
+        
       }
     })
 
@@ -64,17 +78,11 @@
       var li = document.createElement('li')
       var inputCheck = document.createElement('input')
       inputCheck.type = 'checkbox'
-
-
       li.appendChild(inputCheck)
-
-      li.innerHTML = li.innerHTML + x.value
-
+      li.innerHTML = li.innerHTML + x.value.trim()
       var icon = document.createElement('i')
       icon.setAttribute('class', 'fa fa-trash');
       li.appendChild(icon)
-
-
       ulTasks.appendChild(li)
     }
   </script>
